@@ -1,0 +1,12 @@
+import time
+given_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,12,20]
+def find_sum(given_array):
+    total = 0
+    for num in given_array:
+        total += num
+    return total
+result = find_sum(given_array)
+start_time = time.time()
+end_time = time.time()
+print(f"Sum: {result}")
+print(f"Time taken: {end_time - start_time} seconds")

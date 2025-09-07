@@ -1,0 +1,12 @@
+class Temperature:
+    def __init__(self, celsius, fahrenheit, kelvin):
+        self.celsius = celsius
+        self.fahrenheit = fahrenheit
+        self.kelvin = kelvin
+        self.convert_temperature()
+
+    def convert_temperature(self):
+        self.fahrenheit = (self.celsius * 9/5) + 32
+        self.kelvin = self.celsius + 273.15
+Temperature1 = Temperature(celsius=25, fahrenheit=0, kelvin=0)
+print(f"Celsius: {Temperature1.celsius}, Fahrenheit: {Temperature1.fahrenheit}, Kelvin: {Temperature1.kelvin}")

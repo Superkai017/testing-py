@@ -1,0 +1,58 @@
+import json
+def to_do_list():
+    tasks = []
+    while True:
+        print("\n====== To-Do-lists=====")
+        print("1. Add Task")
+        print("2. View Tasks")
+        print("3. Remove Task")
+        print("4. Save Tasks")
+        print("5. Load Tasks")
+        print("6. Exit")
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            print()
+            n_tasks = int(input("How many tasks do you want to add? "))
+            for i in range(n_tasks):
+                task = input(f"Enter task {i + 1}: ")
+                tasks.append(task)
+            print("Tasks added.")
+        elif choice == "2":
+            print("\n====== Current Tasks ======")
+            for i, task in enumerate(tasks, 1):
+                print(f"{i}. {task}")
+            print("============================")
+            if not tasks:
+                print("No tasks available.")
+            else:
+                print("Tasks displayed.")
+        elif choice == "3":
+            if not tasks:
+                print("No tasks available to remove.")
+            else:
+                task_num = int(input("Enter the task number to remove: "))
+                if 1 <= task_num <= len(tasks):
+                    removed_task = tasks.pop(task_num - 1)
+                    print(f"Removed task: {removed_task}")
+                else:
+                    print("Invalid task number.")
+        elif choice == "4":
+            with open("tasks.json", "w") as f:
+                json.dump(tasks, f)
+            print("Tasks saved.")
+        elif choice == "5":
+            try:
+                with open("tasks.json", "r") as f:
+                    tasks = json.load(f)
+                print("Tasks loaded.")
+            except FileNotFoundError:
+                print("No saved tasks found.")
+            except json.JSONDecodeError:
+                print("Error decoding JSON.")
+        elif choice == "6":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+if __name__ == "__main__":
+    to_do_list()

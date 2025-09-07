@@ -1,0 +1,19 @@
+def text_analyser(text):
+    char_count = len(text)
+    word_count = len(text.split())
+    sentence_count = text.count('.') + text.count('!') + text.count('?')
+    words = text.split()
+    word_freq = {}
+    for word in words:
+        word = word.lower().strip('.,!?;"\'()[]{}')
+        if word:
+            word_freq[word] = word_freq.get(word, 0) + 1
+
+    common_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:5]
+    return { "char_count": char_count, "word_count": word_count, "sentence_count": sentence_count, "common_words": common_words }
+sample_text = "Hello world! This is a test. This test is only a test."  
+result = text_analyser(sample_text)
+print(f"Characters: {result['char_count']}")
+print(f"Words: {result['word_count']}")
+print(f"Sentences: {result['sentence_count']}")
+print("Most common words:", result['common_words'])

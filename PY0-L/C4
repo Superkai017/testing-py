@@ -1,0 +1,5 @@
+def convert_temperature(celsius):
+    fahrenheit = (celsius * 9/5) + 32
+    return fahrenheit
+print(convert_temperature(0))
+print(convert_temperature(100))

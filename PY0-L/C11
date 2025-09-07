@@ -1,0 +1,9 @@
+def employer_data_base():
+    employer = {
+        'location': str(input("please enter your location; ")),
+        'name': str(input("please enter your name; ")),
+        'employees': int(input("please enter number of employees; "))
+    }
+    return employer
+result = employer_data_base()
+print(result)

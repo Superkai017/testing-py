@@ -1,0 +1,224 @@
+import math
+import re
+from fractions import Fraction
+import sympy as sp
+
+class MathAISolver:
+    def __init__(self):
+            self.operations = {
+            'addition': self.solve_addition,
+            'subtraction': self.solve_subtraction,
+            'multiplication': self.solve_multiplication,
+            'division': self.solve_division,
+            'exponent': self.solve_exponent,
+            'square_root': self.solve_square_root,
+            'equation': self.solve_equation,
+            'quadratic': self.solve_quadratic,
+            'percentage': self.solve_percentage,
+            'fraction': self.solve_fraction
+        }
+    def solve_addition(self, numbers):
+          """ solve addition """
+          return sum(numbers)
+    def solve_subtraction(self, numbers):
+          """ solve subtraction """
+          return numbers[0] - sum(numbers[1:])
+    def solve_multiplication(self, numbers):
+          """ solve multiplication """
+          result = 1
+          for n in numbers:
+              result *= n
+          return result
+    def solve_division(self, numbers):
+        """Solve division problems"""
+        if len(numbers) < 2:
+            return numbers[0]
+        result = numbers[0]
+        for num in numbers[1:]:
+            if num == 0:
+                return "Error: Division by zero"
+            result /= num
+        return result
+    def solve_exponent(self, numbers):
+        """Solve exponentiation problems"""
+        if len(numbers) != 2:
+            return "Error: Exponentiation requires exactly two numbers"
+        base, exp = numbers
+        return base ** exp
+    def solve_square_root(self, numbers):
+        """Solve square root problems"""
+        if len(numbers) != 1:
+            return "Error: Square root requires exactly 1 number"
+        if numbers[0] < 0:
+            return "Error: Cannot take square root of negative number"
+        return math.sqrt(numbers[0])
+    
+    def solve_equation(self, equation):
+        """Solve simple linear equations"""
+        try:
+            # Use sympy to solve equations
+            x = sp.symbols('x')
+            solution = sp.solve(equation, x)
+            return solution
+        except:
+            return "Error: Could not solve equation"
+    
+    def solve_quadratic(self, a, b, c):
+        """Solve quadratic equations"""
+        discriminant = b**2 - 4*a*c
+        
+        if discriminant < 0:
+            real_part = -b / (2*a)
+            imaginary_part = math.sqrt(abs(discriminant)) / (2*a)
+            return f"Complex roots: {real_part} ± {imaginary_part}i"
+        elif discriminant == 0:
+            root = -b / (2*a)
+            return f"Double root: {root}"
+        else:
+            root1 = (-b + math.sqrt(discriminant)) / (2*a)
+            root2 = (-b - math.sqrt(discriminant)) / (2*a)
+            return f"Roots: {root1}, {root2}"
+    
+    def solve_percentage(self, part, whole):
+        """Calculate percentage"""
+        if whole == 0:
+            return "Error: Whole cannot be zero"
+        return (part / whole) * 100
+    
+    def solve_fraction(self, numerator, denominator):
+        """Simplify fractions"""
+        if denominator == 0:
+            return "Error: Denominator cannot be zero"
+        return Fraction(numerator, denominator)
+    
+    def parse_input(self, user_input):
+        """Parse user input to determine operation and extract numbers"""
+        user_input = user_input.lower().strip()
+        
+        # Check for specific operations
+        if '+' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            return 'addition', numbers
+        
+        elif '-' in user_input and not user_input.startswith('-'):
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            return 'subtraction', numbers
+        
+        elif '*' in user_input or '×' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            return 'multiplication', numbers
+        
+        elif '/' in user_input or '÷' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            return 'division', numbers
+        
+        elif '^' in user_input or '**' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            return 'exponent', numbers
+        
+        elif 'sqrt' in user_input or '√' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            return 'square_root', numbers
+        
+        elif '=' in user_input and 'x' in user_input:
+            return 'equation', user_input
+        
+        elif 'quadratic' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            if len(numbers) == 3:
+                return 'quadratic', numbers
+        
+        elif '%' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            if len(numbers) == 2:
+                return 'percentage', numbers
+        
+        elif 'fraction' in user_input or '/' in user_input:
+            numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+            if len(numbers) == 2:
+                return 'fraction', numbers
+        
+        # Default to addition if no operator found but numbers are present
+        numbers = [float(x) for x in re.findall(r'[-+]?\d*\.?\d+', user_input)]
+        if numbers:
+            return 'addition', numbers
+        
+        return 'unknown', []
+    
+    def solve(self, user_input):
+        """Main solve method"""
+        operation, data = self.parse_input(user_input)
+        
+        if operation == 'unknown':
+            return "I couldn't understand the problem. Please try again."
+        
+        if operation in self.operations:
+            try:
+                if operation == 'quadratic' and len(data) == 3:
+                    return self.operations[operation](data[0], data[1], data[2])
+                elif operation == 'equation':
+                    return self.operations[operation](data)
+                else:
+                    return self.operations[operation](data)
+            except Exception as e:
+                return f"Error solving problem: {str(e)}"
+        
+        return "Operation not supported"
+
+# Example usage and demonstration
+def main():
+    solver = MathAISolver()
+    
+    print("Math AI Solver")
+    print("=" * 50)
+    print("Supported operations: +, -, *, /, ^, sqrt, equations, quadratic, percentage, fractions")
+    print("Examples: '2 + 3', '5 * 4', 'sqrt(16)', '2x + 5 = 13', 'quadratic 1 -3 2'")
+    print("Type 'quit' to exit\n")
+    
+    while True:
+        user_input = input("Enter math problem: ")
+        
+        if user_input.lower() in ['quit', 'exit', 'q']:
+            print("Goodbye!")
+            break
+        
+        if not user_input.strip():
+            continue
+        
+        result = solver.solve(user_input)
+        print(f"Result: {result}\n")
+
+# Test function
+def test_solver():
+    """Test the math solver with various problems"""
+    solver = MathAISolver()
+    
+    test_cases = [
+        "2 + 3 + 5",
+        "10 - 4 - 1",
+        "3 * 4 * 2",
+        "20 / 4 / 2",
+        "2 ^ 3",
+        "sqrt(25)",
+        "2x + 5 = 13",
+        "quadratic 1 -3 2",
+        "what is 25% of 80?",
+        "simplify fraction 6/8"
+    ]
+    
+    print("Testing Math AI Solver:")
+    print("=" * 40)
+    
+    for test in test_cases:
+        result = solver.solve(test)
+        print(f"Input: {test}")
+        print(f"Result: {result}")
+        print("-" * 40)
+
+if __name__ == "__main__":
+    # Run tests
+    test_solver()
+    print("\n" + "="*50 + "\n")
+    
+    # Start interactive mode
+    main()

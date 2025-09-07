@@ -1,0 +1,2 @@
+word = "artifical intelligence"
+print(word.split())

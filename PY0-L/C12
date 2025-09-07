@@ -1,0 +1,16 @@
+def Student_information_list():
+    information = []
+    categories = ["Name", "Age", "Grade", "City", "course", "major"]
+    for category in categories:
+        info = input(f"Enter your {category}: ")
+        information.append(info)
+    print("--------------------------------")
+    print("\tStudent Information")
+    print("--------------------------------")
+    for i in range(len(categories)):
+        categories_formatted = categories[i].ljust(10)
+        info_formatted = information[i].rjust(10)
+        print(f"| {categories_formatted} | {info_formatted} |")
+    print("--------------------------------")
+    return information
+Student_information_list()

@@ -1,0 +1,7 @@
+def count_vowels(words):
+    vowels = 'aeiouAEIOU'
+    for word in words:
+        count = sum(1 for char in word if char in vowels)
+        print(f"Word: {word}, Vowel Count: {count}")
+    return
+print(count_vowels(["hello", "world", "python"]))

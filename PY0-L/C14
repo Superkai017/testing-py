@@ -1,0 +1,107 @@
+import math
+import numpy as np
+import sympy as sp
+def display_menu():
+    print("Welcome to Simple Math Calculator")
+    print("Select operation:")
+    print("1. Addition")
+    print("2. Subtraction")
+    print("3. Multiplication")
+    print("4. Division")
+    print("5. Exponentiation")
+    print("6. Square Root")
+    print("7. Solve Linear Equation")
+def get_operation(choice):
+    operations = {
+        '1': 'addition',
+        '2': 'subtraction',
+        '3': 'multiplication',
+        '4': 'division',
+        '5': 'exponent',
+        '6': 'square_root',
+    }
+    return operations.get(choice, None)
+def calculate(operation, numbers):
+    if operation == 'addition':
+        return sum(numbers)
+    elif operation == 'subtraction':
+        return numbers[0] - sum(numbers[1:])
+    if operation == 'multiplication':
+        result = 1
+        for number in numbers:
+            result *= number
+        return result
+    elif operation == 'division':
+        result = numbers[0]
+        for number in numbers[1:]:
+            if number == 0:
+                return "Error: Division by zero"
+            result /= number
+        return result
+    elif operation == 'exponent':
+        return numbers[0] ** numbers[1]
+    elif operation == 'square_root':
+        if numbers[0] < 0:
+            return "Error: Cannot compute square root of negative number"
+        return math.sqrt(numbers[0])
+    elif operation == 'linear_equation':
+        x = sp.symbols('x')
+        equation = sp.Eq(numbers[0]*x + numbers[1], 0)
+        solution = sp.solve(equation, x)
+        return solution[0]
+    else:
+        return "Invalid operation"
+def main():
+    while True:
+        display_menu()
+        choice = input("Enter choice (1-7) or 'q' to quit: ")
+        if choice.lower() == 'q':
+            print("Exiting the calculator. Goodbye!")
+            break
+        if choice == '7':
+            try:
+                a = float(input("Enter coefficient a (for ax + b = 0): "))
+                b = float(input("Enter coefficient b (for ax + b = 0): "))
+            except ValueError:
+                print("Invalid input: please enter numeric values for a and b.")
+                continue
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+                continue
+            result = calculate('linear_equation', [a, b])
+            print(f"The solution is x = {result}")
+        if choice in ['1', '2', '3', '4']:
+            try:
+                numbers = list(map(float, input("Enter numbers separated by space: ").split()))
+                if len(numbers) < 2:
+                    print("Please enter at least two numbers.")
+                    continue
+            except ValueError:
+                print("Invalid input: please enter numeric values.")
+                continue
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+                continue
+            result = calculate(get_operation(choice), numbers)
+            print(f"The result is: {result}")
+        elif choice in ['5', '6']:
+            try:
+                if choice == '5':
+                    base = float(input("Enter the base number: "))
+                    exponent = float(input("Enter the exponent: "))
+                    numbers = [base, exponent]
+                else:
+                    number = float(input("Enter the number: "))
+                    numbers = [number]
+            except ValueError:
+                print("Invalid input: please enter numeric values.")
+                continue
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+                continue
+            result = calculate(get_operation(choice), numbers)
+            print(f"The result is: {result}")
+        else:
+            print("Invalid choice. Please select a valid operation.")
+if __name__ == "__main__":
+    main()
