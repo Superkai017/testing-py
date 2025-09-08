@@ -1,2 +1,8 @@
-word = "artifical intelligence"
-print(word.split())
+def counting_word():
+    text = str(input("Enter a sentence: "))
+    words = text.split()
+    word_count = len(words)
+    for word in words:
+        print(f"Word: {word}, Length: {len(word)}, Total Words: {word_count}")
+
+counting_word()

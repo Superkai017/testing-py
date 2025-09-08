@@ -26,7 +26,7 @@ def calculate(operation, numbers):
         return sum(numbers)
     elif operation == 'subtraction':
         return numbers[0] - sum(numbers[1:])
-    if operation == 'multiplication':
+    elif operation == 'multiplication':
         result = 1
         for number in numbers:
             result *= number
@@ -46,7 +46,7 @@ def calculate(operation, numbers):
         return math.sqrt(numbers[0])
     elif operation == 'linear_equation':
         x = sp.symbols('x')
-        equation = sp.Eq(numbers[0]*x + numbers[1], 0)
+        equation = sp.Eq(numbers[0]*x + numbers[1], numbers[2])
         solution = sp.solve(equation, x)
         return solution[0]
     else:
@@ -60,15 +60,16 @@ def main():
             break
         if choice == '7':
             try:
-                a = float(input("Enter coefficient a (for ax + b = 0): "))
-                b = float(input("Enter coefficient b (for ax + b = 0): "))
+                a = float(input("Enter coefficient a (for ax + b = c): "))
+                b = float(input("Enter coefficient b (for ax + b = c): "))
+                c = float(input("Enter coefficient c (for ax + b = c): "))
             except ValueError:
-                print("Invalid input: please enter numeric values for a and b.")
+                print("Invalid input: please enter numeric values for a, b, and c.")
                 continue
             except Exception as e:
                 print(f"An unexpected error occurred: {e}")
                 continue
-            result = calculate('linear_equation', [a, b])
+            result = calculate('linear_equation', [a, b, c])
             print(f"The solution is x = {result}")
         if choice in ['1', '2', '3', '4']:
             try:
