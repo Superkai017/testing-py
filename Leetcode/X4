@@ -1,0 +1,11 @@
+def sortvowels(s):
+    s = list(s)
+    vset = set('aeiouAEIOU')
+    v = sorted([c for c in s if c in vset])
+    j = 0
+    for i in range(len(s)):
+        if s[i] in vset:
+            s[i] = v[j]
+            j += 1
+    return ''.join(s)
+print(sortvowels("LEETCODE"))
