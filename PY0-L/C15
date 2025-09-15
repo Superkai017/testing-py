@@ -1,2 +1,11 @@
-word = "hello"
-print(word[:])
+import pandas as pd
+x = {
+    "name":["Oudom"],
+    "age":[21],
+    "city":["phnom penh"],
+    "school":["AUPP"],
+    "classification":["FM"],
+    "major":["CS"],
+}
+df = pd.DataFrame([x])
+print(df)
